@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container-fluid text-center">
+            <h1>Heuristic word autocomplete</h1>
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Try it!</h4>
+                    <select class="form-select" id="model">
+                        <option value="alice_de.json" selected>[DE] alice im wunderland</option>
+                        <option value="harry1_de.json">[DE] Harry Potter und der Stein der Weisen</option>
+                        <option value="harry2_de.json">[DE] Harry Potter und die Kammer des Schreckens</option>
+                        <option value="harry3_de.json">[DE] Harry Potter und der Gefangene von Askaban</option>
+                        <option value="harry4_de.json">[DE] Harry Potter und der Feuerkelch</option>
+                        <option value="harry5_de.json">[DE] Harry Potter und der Orden des Phönix</option>
+                        <option value="ultimate_de.json">[DE] Alle vorherigen + Ein Wörterbuch</option>
+                      </select>
+                    <div class="input-group pt-2">
+                        <span class="input-group-text">INPUT</span>
+                        <input class="form-control" id="input">
+                    </div>
+                    <div class="input-group pt-2">
+                        <span class="input-group-text">GUESS</span>
+                        <input class="form-control" id="output" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="/js/bootstrap.min.js"></script>
+    <script>
+
+        const input = document.getElementById("input")
+        const output = document.getElementById("output")
+        const select = document.getElementById("model")
+
+        var models = {}
+
+        function loadModel(modelName) {
+            if (models[modelName]) {
+                model = models[modelName];
+                completeWord();
+            } else {
+                let xhttp = new XMLHttpRequest();
+                xhttp.addEventListener("load", () => {
+                    model = JSON.parse(xhttp.responseText);
+                    models[modelName] = model;
+                    completeWord();
+                });
+                xhttp.open("GET", "/model?model="+modelName);
+                xhttp.send();
+            }
+        }
+
+        select.addEventListener("change", () => {
+            loadModel(select.value);
+            completeWord();
+        })
+
+        var model = []
+        loadModel(select.value);
+
+        input.addEventListener("input", () => {
+            completeWord();
+        })
+
+        function completeWord() {
+            word = input.value.split(" ").pop().toLowerCase()
+
+            let currentNode = model;
+            for (let i = 0; i < word.length; i++) {
+                currentNode = currentNode.find(node => node.l === word[i]);
+                if (!currentNode) return word;
+                currentNode = currentNode.f;
+            }
+            while (currentNode && currentNode[0].l !== ' ') {
+                currentNode = currentNode.reduce((a, b) => a.p < b.p ? a : b);
+                word += currentNode.l;
+                currentNode = currentNode.f;
+            }
+            output.value = word;
+        }
+    </script>
+</html>
