@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link href=" https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css " rel="stylesheet">
     </head>
     <body>
         <div class="container-fluid text-center">
@@ -30,7 +30,7 @@
             </div>
         </div>
     </body>
-    <script src="/js/bootstrap.min.js"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js "></script>
     <script>
 
         const input = document.getElementById("input")
@@ -50,7 +50,7 @@
                     models[modelName] = model;
                     completeWord();
                 });
-                xhttp.open("GET", "/model?model="+modelName);
+                xhttp.open("GET", "https://alessioc42.github.io/wordAutoComplete/webServer/models/"+modelName);
                 xhttp.send();
             }
         }
