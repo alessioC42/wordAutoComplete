@@ -1,4 +1,5 @@
 # wordAutoComplete
- A heuristic approach to completing single words in the context of an NLP problem.
+Instead of a word n-gram, this repo contains a char-based n-gram for a better understanding of the n-gram concept. 
+## <a href="https://alessioc42.github.io/wordAutoComplete/webServer/">DEMO</a>
 
 <img src="screenshot_webUI.png">

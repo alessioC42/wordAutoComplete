@@ -51,6 +51,7 @@
                     completeWord();
                 });
                 xhttp.open("GET", "/model?model="+modelName);
+                xhttp.setRequestHeader("Accept-Encoding", "gzip");
                 xhttp.send();
             }
         }
