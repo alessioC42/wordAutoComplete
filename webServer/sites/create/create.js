@@ -36,9 +36,15 @@ function getAllFollowingChars(start, words, wordDict) {
   return returnObj;
 }
 
-function generateModel(text) {
-  text = text.toLowerCase();
-  text = text.replace(/[.,\/#?!$%\^&\*;:{}\r=\-_`~()«»©]/g, "");
+function generateModel(text, transformtolowercase, removepunctuation, wordcountcb,progresscb) {
+  
+  if (transformtolowercase) {
+    text = text.toLowerCase();
+  }
+  if (removepunctuation) {
+    text = text.replace(/[.,\/#?"!$%\^&\*;:{}\r=\-<>|_`~()«»©]/g, " ");
+  }
+
   text = text.replace(/\n/g, " ");
 
   let words = text.split(" ");
@@ -55,14 +61,13 @@ function generateModel(text) {
   }
   words = Object.keys(wordDict);
 
-  console.log(
-    "Generating model with a total of " + words.length + " different words"
-  );
+  wordcountcb("Generating model with a total of " + words.length + " different words");
 
   //generate JSON
   let returnObj = [];
   let [chars, _x] = probabilityWithStart("", wordDict, words);
   for (let i = 0; i < chars.length; i++) {
+    progresscb(Math.round((i/chars.length)*100))
     let char = chars[i];
     let appendObj = {
       l: char,
@@ -71,12 +76,12 @@ function generateModel(text) {
     };
     returnObj.push(appendObj);
   }
-
+  progresscb(100);
   return (returnObj);
 }
 
 function getPromise(model, input) {
-    word = input.value.split(" ").pop().toLowerCase()
+    word = input;
 
     for (let i = 0; i < word.length; i++) {
         model = model.find(node => node.l === word[i]);
