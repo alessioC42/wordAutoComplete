@@ -23,6 +23,7 @@
                             <div class="accordion-body">
                               Just put any <strong>large text</strong> you want in here.
                               <textarea class="form-control mt-2" rows="8" id="textarea_train_data"></textarea>
+                              <button class="btn btn-primary mt-3" onclick="uploadtextfile()">upload textfile</button>
                             </div>
                           </div>
                         </div>
@@ -84,6 +85,10 @@
                                 <div class="input-group pt-2">
                                     <span class="input-group-text">GUESS</span>
                                     <input class="form-control" id="tryoutput" disabled>
+                                </div>
+                                <div class="btn-group mt-2">
+                                  <button class="btn btn-primary" id="download_model_button">download model</button>
+                                  <button class="btn btn-primary" id="upload_model_button">upload model</button>
                                 </div>
                               </div>
                             </div>
